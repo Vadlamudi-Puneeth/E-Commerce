@@ -1,0 +1,269 @@
+.page {
+    padding: 24px 0;
+    background: #f1f3f6;
+    min-height: calc(100vh - 56px);
+}
+
+.container {
+    max-width: 1248px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+}
+
+/* Order Summary Styles */
+.summary {
+    background: #fff;
+    padding: 24px;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+    height: fit-content;
+}
+
+.summary h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #212121;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.productSummary {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 16px;
+}
+
+.productImage {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.productDetails h3 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #212121;
+    margin-bottom: 8px;
+}
+
+.pricing {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: 500;
+    color: #212121;
+}
+
+.mrp {
+    color: #878787;
+    text-decoration: line-through;
+    font-size: 14px;
+}
+
+.discount {
+    color: #388e3c;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.priceBreakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.priceRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #212121;
+}
+
+.free {
+    color: #388e3c;
+}
+
+.total {
+    padding-top: 12px;
+    border-top: 1px dashed #e0e0e0;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+/* Form Styles */
+.formSection {
+    background: #fff;
+    padding: 24px;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+}
+
+.form h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #212121;
+    margin-bottom: 24px;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formGroup.fullWidth {
+    grid-column: 1 / -1;
+}
+
+.formGroup label {
+    font-size: 14px;
+    color: #212121;
+    font-weight: 500;
+}
+
+.formGroup input,
+.formGroup textarea {
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    font-size: 14px;
+    color: #212121;
+    transition: border-color 0.2s;
+}
+
+.formGroup textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #2874f0;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 16px;
+}
+
+.submitBtn,
+.backBtn {
+    padding: 16px 32px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.submitBtn {
+    background: #fb641b;
+    color: #fff;
+    flex: 1;
+}
+
+.backBtn {
+    background: #fff;
+    color: #2874f0;
+    border: 1px solid #e0e0e0;
+}
+
+.submitBtn:hover {
+    background: #e85d19;
+}
+
+.backBtn:hover {
+    background: #f5f5f5;
+}
+
+/* Payment Method Options */
+.paymentOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.paymentOption {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.paymentOption:hover {
+    border-color: #2874f0;
+    background: #f5f7ff;
+}
+
+.paymentOption input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.paymentOption input[type="radio"]:checked + .paymentLabel {
+    color: #2874f0;
+}
+
+.paymentOption:has(input[type="radio"]:checked) {
+    border-color: #2874f0;
+    background: #f5f7ff;
+}
+
+.paymentLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #212121;
+}
+
+.paymentIcon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        padding: 0 8px;
+    }
+
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .buttonGroup {
+        flex-direction: column-reverse;
+    }
+
+    .submitBtn,
+    .backBtn {
+        width: 100%;
+    }
+}

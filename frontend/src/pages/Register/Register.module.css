@@ -1,0 +1,100 @@
+.container {
+    max-width: 420px;
+    margin: 3rem auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 33, 89, 0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    text-align: center;
+}
+
+.heading {
+    color: #002159;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.input {
+    padding: 0.85rem 1rem;
+    border: 1.5px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f8f9fa;
+    transition: border-color 0.2s;
+}
+
+.input:focus {
+    border-color: #296eff;
+    outline: none;
+    background: #fff;
+}
+
+.passwordContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.eyeIcon {
+    position: absolute;
+    right: 1rem;
+    color: #7b8794;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+
+.eyeIcon:hover {
+    color: #002159;
+}
+
+.button {
+    background: linear-gradient(90deg, #296eff 60%, #002159 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.9rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    box-shadow: 0 2px 8px rgba(41, 110, 255, 0.10);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.button:hover {
+    background: linear-gradient(90deg, #002159 60%, #296eff 100%);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.error {
+    color: #dc3545;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    background: #fff0f0;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+}
+
+.linkText {
+    margin-top: 1.5rem;
+    color: #7b8794;
+}
+
+.linkText a {
+    color: #296eff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.linkText a:hover {
+    color: #002159;
+    text-decoration: underline;
+}

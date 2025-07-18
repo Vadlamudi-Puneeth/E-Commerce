@@ -1,0 +1,102 @@
+.App {
+    min-height: 100vh;
+    width: 100%;
+    padding-top: 56px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, Arial, sans-serif;
+    background: #f1f3f6;
+    color: #212121;
+}
+
+button {
+    font-family: Roboto, Arial, sans-serif;
+}
+
+/* Common styles */
+.container {
+    max-width: 1248px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.section {
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+    margin: 16px 0;
+    padding: 24px;
+}
+
+.btn-primary {
+    background: #2874f0;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background: #1c5ac7;
+}
+
+.btn-secondary {
+    background: #ff9f00;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background: #e68f00;
+}
+
+/* Form styles */
+.form-control {
+    width: 100%;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: 1px solid #dbdbdb;
+    border-radius: 2px;
+    margin-bottom: 16px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #2874f0;
+}
+
+/* Grid system */
+.grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 8px;
+    }
+
+    .section {
+        padding: 16px;
+        margin: 8px 0;
+    }
+}
