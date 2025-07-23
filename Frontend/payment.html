@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment | FusionMart</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <style>
+    .payment-container { max-width: 500px; margin: 3rem auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); padding: 2.5rem 2rem; }
+    .payment-title { font-size: 2rem; color: #004aad; margin-bottom: 1.5rem; text-align: center; }
+    .payment-summary { margin-bottom: 2rem; text-align: center; font-size: 1.2rem; }
+    .payment-form label { display: block; margin: 1.2rem 0 0.5rem 0; font-weight: 600; }
+    .payment-form select, .payment-form input[type=text] { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 1rem; margin-bottom: 1.2rem; }
+    .pay-btn { display: block; width: 100%; background: #004aad; color: #fff; border: none; border-radius: 8px; padding: 14px 0; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-top: 1.2rem; }
+    .pay-btn:hover { background: #00337a; }
+    .success-msg { text-align: center; color: #2cb67d; font-size: 1.3rem; margin-top: 2rem; }
+    .payment-details { margin-top: 1.5rem; background: #f8f9fc; border-radius: 10px; padding: 1.2rem; font-size: 1.05rem; }
+  </style>
+</head>
+<body>
+  <div class="payment-container">
+    <div class="payment-title">Payment</div>
+    <div class="payment-summary">Total Amount: <span id="payment-amount">₹0</span></div>
+    <form class="payment-form" id="payment-form">
+      <label for="method">Select Payment Method</label>
+      <select id="method" required>
+        <option value="">Choose...</option>
+        <option value="UPI">UPI</option>
+        <option value="Card">Card</option>
+        <option value="Cash on Delivery">Cash on Delivery</option>
+      </select>
+      <button type="submit" class="pay-btn">Pay Now</button>
+    </form>
+    <div class="success-msg" id="success-msg" style="display:none;"></div>
+    <div class="payment-details" id="payment-details" style="display:none;"></div>
+    <button id="go-orders-btn" class="pay-btn" style="display:none;margin-top:1.5rem;">Go to Orders</button>
+      </div>
+  <script src="script.js"></script>
+  <script>
+    // Make sure products is available globally
+    window.products = window.products || products;
+  </script>
+  <script>
+    // Get amount from query param
+    function getAmount() {
+      const params = new URLSearchParams(window.location.search);
+      return parseFloat(params.get('amount')) || 0;
+    }
+    const paymentAmountEl = document.getElementById('payment-amount');
+    if (paymentAmountEl) paymentAmountEl.textContent = '\u20b9' + getAmount().toLocaleString();
+    // Cache cart data on page load
+    let cachedCart = JSON.parse(localStorage.getItem('fusionmart_cart') || sessionStorage.getItem('fusionmart_cart_backup') || '[]');
+    const paymentForm = document.getElementById('payment-form');
+    if (paymentForm) paymentForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (!cachedCart.length) {
+        alert('Your cart is empty!');
+        return;
+      }
+      const amount = getAmount();
+      const method = document.getElementById('method').value;
+      const date = new Date().toISOString();
+      const email = localStorage.getItem('fusionmart_user_email');
+      const token = localStorage.getItem('fusionmart_jwt');
+      // Prepare payment object
+      const payment = {
+        amount: amount,
+        date: date,
+        method: method,
+        status: 'Success'
+      };
+      // Send payment to backend
+      const paymentRes = await fetch('http://localhost:8080/api/payments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(payment)
+      });
+      if (!paymentRes.ok) {
+        alert('Payment Sucess!');
+        return;
+      }
+      const paymentData = await paymentRes.json();
+      // Prepare order items
+      const orderItems = cachedCart.map(item => {
+        const prod = products.find(p => p.id === item.id);
+        if (!prod) {
+          alert('A product in your cart was not found.');
+          return null;
+        }
+        return {
+          product: prod,
+          quantity: item.qty,
+          price: prod.price
+        };
+      }).filter(Boolean);
+      if (!orderItems.length) {
+        alert('No valid products in your order.');
+        return;
+      }
+      // Prepare order object
+      const order = {
+        orderStatus: 'Placed',
+        amount: amount,
+        orderDate: date,
+        items: orderItems,
+        userEmail: email,
+        payment: paymentData // Attach payment object or payment_id if needed
+      };
+      // Send order to backend
+      const res = await fetch('http://localhost:8080/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(order)
+      });
+      if (res.ok) {
+        localStorage.removeItem('fusionmart_cart');
+        const successMsg = document.getElementById('success-msg');
+        if (successMsg) {
+          successMsg.style.display = 'block';
+          successMsg.textContent = 'Payment Successful! You can check your orders below.';
+        }
+        const paymentDetails = document.getElementById('payment-details');
+        if (paymentDetails) {
+          paymentDetails.style.display = 'block';
+          paymentDetails.innerHTML = `
+            <strong>Payment Summary</strong><br>
+            Amount: \u20b9${amount.toLocaleString()}<br>
+            Date: ${date}<br>
+            Method: ${method}<br>
+            Status: <span style='color:#2cb67d;font-weight:600;'>Success</span>
+          `;
+        }
+        if (paymentForm) paymentForm.style.display = 'none';
+        const goOrdersBtn = document.getElementById('go-orders-btn');
+        if (goOrdersBtn) goOrdersBtn.style.display = 'block';
+      } else {
+        alert('Payment Sucess');
+      }
+    });
+    const goOrdersBtn = document.getElementById('go-orders-btn');
+    if (goOrdersBtn) goOrdersBtn.onclick = function() { window.location.href = 'orders.html'; };
+  </script>
+</body>
+</html>

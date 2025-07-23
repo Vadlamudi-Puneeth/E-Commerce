@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart | FusionMart</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <style>
+    .cart-container { max-width: 900px; margin: 2.5rem auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); padding: 2.5rem 2rem; }
+    .cart-title { font-size: 2rem; color: #004aad; margin-bottom: 1.5rem; text-align: center; }
+    .cart-list { width: 100%; margin-bottom: 2rem; }
+    .cart-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; border-bottom: 1px solid #eee; padding: 1.2rem 0; }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item-img { flex: 0 0 auto; }
+    .cart-item-img img { width: 90px; height: 90px; object-fit: contain; border-radius: 10px; background: #f8f9fc; }
+    .cart-item-info { flex: 1 1 0; text-align: right; }
+    .cart-item-name { font-size: 1.1rem; font-weight: 600; color: #004aad; margin-bottom: 0.3rem; }
+    .cart-item-price { color: #222; font-weight: 600; margin-bottom: 0.3rem; }
+    .cart-item-qty { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; justify-content: flex-end; }
+    .cart-qty-btn { background: #eee; border: none; border-radius: 4px; font-size: 1.1rem; width: 28px; height: 28px; cursor: pointer; transition: background 0.2s; }
+    .cart-qty-btn:hover { background: #004aad; color: #fff; }
+    .cart-remove-btn { background: #ff5c5c; color: #fff; border: none; border-radius: 4px; font-size: 1.1rem; width: 28px; height: 28px; cursor: pointer; margin-left: 0.7rem; }
+    .cart-remove-btn:hover { background: #c0392b; }
+    .cart-total-row { text-align: right; font-size: 1.2rem; font-weight: 700; color: #222; margin-top: 2rem; }
+    .place-order-btn { display: block; margin: 2rem auto 0 auto; background: #004aad; color: #fff; border: none; border-radius: 8px; padding: 14px 48px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .place-order-btn:hover { background: #00337a; }
+    .empty-cart-msg { text-align: center; color: #888; font-size: 1.2rem; margin: 3rem 0; }
+  </style>
+</head>
+<body>
+  <div class="cart-container">
+    <div class="cart-title">Your Cart</div>
+    <div class="cart-list" id="cart-list"></div>
+    <div class="cart-total-row" id="cart-total-row"></div>
+    <button class="place-order-btn" id="place-order-btn">Place Order</button>
+  </div>
+  <script src="script.js"></script>
+  <script>
+    function renderCart() {
+      const cart = JSON.parse(localStorage.getItem('fusionmart_cart') || '[]');
+      const cartList = document.getElementById('cart-list');
+      const cartTotalRow = document.getElementById('cart-total-row');
+      if (!cart.length) {
+        cartList.innerHTML = '<div class="empty-cart-msg">Your cart is empty.</div>';
+        cartTotalRow.textContent = '';
+        document.getElementById('place-order-btn').style.display = 'none';
+        return;
+      }
+      let total = 0;
+      cartList.innerHTML = cart.map(item => {
+        const prod = (typeof products !== 'undefined') ? products.find(p => p.id === item.id) : null;
+        if (!prod) return '';
+        const itemTotal = prod.price * item.qty;
+        total += itemTotal;
+        return `
+          <div class="cart-item">
+            <div class="cart-item-img"><img src="${prod.image}" alt="${prod.name}"></div>
+            <div class="cart-item-info">
+              <div class="cart-item-name">${prod.name}</div>
+              <div class="cart-item-price">₹${prod.price.toLocaleString()}</div>
+              <div class="cart-item-qty">
+                <button class="cart-qty-btn" data-id="${prod.id}" data-action="dec">-</button>
+                <span>${item.qty}</span>
+                <button class="cart-qty-btn" data-id="${prod.id}" data-action="inc">+</button>
+                <button class="cart-remove-btn" data-id="${prod.id}">&times;</button>
+              </div>
+              <div style="color:#888;font-size:0.98em;">Total: ₹${itemTotal.toLocaleString()}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      cartTotalRow.textContent = `Cart Total: ₹${total.toLocaleString()}`;
+      document.getElementById('place-order-btn').style.display = 'block';
+    }
+    renderCart();
+    // Quantity and remove handlers
+    document.getElementById('cart-list').addEventListener('click', function(e) {
+      let cart = JSON.parse(localStorage.getItem('fusionmart_cart') || '[]');
+      if (e.target.classList.contains('cart-qty-btn')) {
+        const id = +e.target.dataset.id;
+        const action = e.target.dataset.action;
+        const idx = cart.findIndex(item => item.id === id);
+        if (idx > -1) {
+          if (action === 'inc') cart[idx].qty++;
+          else if (action === 'dec' && cart[idx].qty > 1) cart[idx].qty--;
+          localStorage.setItem('fusionmart_cart', JSON.stringify(cart));
+          renderCart();
+        }
+      }
+      if (e.target.classList.contains('cart-remove-btn')) {
+        const id = +e.target.dataset.id;
+        cart = cart.filter(item => item.id !== id);
+        localStorage.setItem('fusionmart_cart', JSON.stringify(cart));
+        renderCart();
+      }
+    });
+    // Place Order button
+    document.getElementById('place-order-btn').addEventListener('click', function() {
+      const cart = JSON.parse(localStorage.getItem('fusionmart_cart') || '[]');
+      let total = 0;
+      if (typeof products !== 'undefined') {
+        cart.forEach(item => {
+          const prod = products.find(p => p.id === item.id);
+          if (prod) total += prod.price * item.qty;
+        });
+      }
+      // Store cart in sessionStorage as backup
+      sessionStorage.setItem('fusionmart_cart_backup', localStorage.getItem('fusionmart_cart'));
+      window.location.href = 'payment.html?amount=' + encodeURIComponent(total);
+    });
+  </script>
+</body>
+</html> 

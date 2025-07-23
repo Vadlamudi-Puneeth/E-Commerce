@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FusionMart | Online Shopping Site for Electronics & Home Goods</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Loader
+  <div id="loader" aria-label="Loading FusionMart">
+    <div class="spinner"></div>
+    <span>Loading FusionMart...</span>
+  </div> -->
+
+  <!-- Flipkart-style Navbar -->
+  <nav class="navbar" aria-label="Main Navigation">
+    <div class="nav-left">
+      <div class="nav-logo">
+        <img src="images/fusionmartlogo.jpg" alt="FusionMart Logo" />
+        <span class="logo-text">FusionMart</span>
+      </div>
+       <div class="nav-search">
+  <input type="text" id="search-input" placeholder="Search for products, brands and more" aria-label="Search" autocomplete="off"/>
+  <button id="search-btn" aria-label="Search"><span>🔍</span></button>
+  <div class="dropdown" id="suggestions">
+    <div data-link="#electronics">Electronics</div>
+    <div data-link="#home">Home</div>
+    <div data-link="#appliances">Appliances</div>
+    <div data-link="#offers">Special Offers</div>
+  </div>
+</div>
+    </div>
+    <div class="nav-right">
+      <div class="user-dropdown-container" style="position:relative;display:inline-block;">
+        <a href="login.html" class="nav-login-btn">Login</a>
+      </div>
+      <!-- <a href="#" class="nav-more nav-link bounce-animate" id="more-menu-btn">More <span>▼</span></a>
+      <div id="more-dropdown" style="display:none;position:absolute;top:100%;right:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.08);border-radius:8px;min-width:160px;z-index:1001;">
+        <a href="orders.html" style="display:block;padding:12px 18px;color:#004aad;text-decoration:none;font-weight:500;">Orders</a>
+      </div> -->
+      <!-- <a href="contactus.html" class="nav-link bounce-animate">Contact Us</a> -->
+      <div id="cart-icon" tabindex="0" aria-label="View cart">
+        <a href="cart.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;">
+          <span class="cart-icon-svg">🛒</span>
+          <span class="cart-label">Cart</span>
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flipkart-style Categories Bar -->
+  <div class="categories-bar">
+    <a href="#electronics" class="category-link">Electronics</a>
+    <a href="#home" class="category-link">Home</a>
+    <a href="#appliances" class="category-link">Appliances</a>
+    <a href="#deals" class="category-link">Deals</a>
+    <a href="#offers" class="category-link">Offers</a>
+    <!-- <a href="#more" class="category-link">More</a> -->
+  </div>
+
+  <!-- Hero Banner / Carousel -->
+  <section class="hero-banner" id="home">
+    <div class="carousel">
+      <div class="carousel-slide active">
+        <img src="/images/bigsavings.webp" alt="Big Sale" />
+        <div class="carousel-caption">
+          <h1>Big Savings on Electronics</h1>
+          <p>Up to 60% off on top brands</p>
+        </div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/images/flipkart-hero2.jpg" alt="Home Essentials" />
+        <div class="carousel-caption">
+          <h1>Upgrade Your Home</h1>
+          <p>Best deals on home goods</p>
+        </div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-prev" aria-label="Previous">&#10094;</button>
+        <button class="carousel-next" aria-label="Next">&#10095;</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="category-section" id="latest">
+    <div class="section-header">
+      <h2>Latest Products</h2>
+      <p>These are the newly available products which are available in the market</p>
+
+      <div id="latest-products" >
+
+      </div>
+      
+    </div>
+    
+  </section>
+
+  <!-- Electronics Section -->
+  <section class="category-section" id="electronics">
+    <div class="section-header">
+      <h2>Electronics</h2>
+      <p>Discover the latest in smartphones, TVs, headphones, and more. Shop top brands and new arrivals in electronics.</p>
+      <div class="filter-sort-bar">
+        <!-- <select class="sort-dropdown" id="electronics-sort">
+          <option value="default">Sort By</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Rating</option>
+          <option value="newest">Newest</option>
+        </select> -->
+        <!-- <div class="filter-group">
+          <label><input type="checkbox" class="filter-instock" id="electronics-instock"> In Stock Only</label>
+          <label><input type="checkbox" class="filter-price" value="0-5000"> Under ₹5,000</label>
+          <label><input type="checkbox" class="filter-price" value="5000-20000"> ₹5,000 - ₹20,000</label>
+          <label><input type="checkbox" class="filter-price" value="20000-100000"> Above ₹20,000</label>
+          <label><input type="checkbox" class="filter-rating" value="4"> 4★ & above</label>
+        </div> -->
+      </div>
+    </div>
+    <div class="category-product-grid" id="electronics-grid"></div>
+  </section>
+
+  <!-- Home Section -->
+  <section class="category-section" id="home">
+    <h2>Home</h2>
+    <p class="category-desc">Upgrade your living space with our curated selection of home goods, decor, and essentials.</p>
+    <div class="filter-sort-bar">
+      <!-- <select class="sort-dropdown" id="home-sort">
+        <option value="default">Sort By</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rating">Rating</option>
+        <option value="newest">Newest</option>
+      </select>
+      <div class="filter-group">
+        <label><input type="checkbox" class="filter-instock" id="home-instock"> In Stock Only</label>
+        <label><input type="checkbox" class="filter-price" value="0-5000"> Under ₹5,000</label>
+        <label><input type="checkbox" class="filter-price" value="5000-20000"> ₹5,000 - ₹20,000</label>
+        <label><input type="checkbox" class="filter-price" value="20000-100000"> Above ₹20,000</label>
+        <label><input type="checkbox" class="filter-rating" value="4"> 4★ & above</label>
+      </div> -->
+    </div>
+    <div class="category-product-grid" id="home-grid"></div>
+  </section>
+
+  <!-- Appliances Section -->
+  <section class="category-section" id="appliances">
+    <h2>Appliances</h2>
+    <p class="category-desc">Find the best deals on kitchen and home appliances. From blenders to air purifiers, we have it all.</p>
+    <div class="filter-sort-bar">
+      <!-- <select class="sort-dropdown" id="appliances-sort">
+        <option value="default">Sort By</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rating">Rating</option>
+        <option value="newest">Newest</option>
+      </select>
+      <div class="filter-group">
+        <label><input type="checkbox" class="filter-instock" id="appliances-instock"> In Stock Only</label>
+        <label><input type="checkbox" class="filter-price" value="0-5000"> Under ₹5,000</label>
+        <label><input type="checkbox" class="filter-price" value="5000-20000"> ₹5,000 - ₹20,000</label>
+        <label><input type="checkbox" class="filter-price" value="20000-100000"> Above ₹20,000</label>
+        <label><input type="checkbox" class="filter-rating" value="4"> 4★ & above</label>
+      </div> -->
+    </div>
+    <div class="category-product-grid" id="appliances-grid"></div>
+  </section>
+
+  <!-- Special Offers Section -->
+  <section class="category-section" id="offers" style="text-align:center;max-width:700px;margin:2rem auto;">
+    <h2>Special Offers</h2>
+    <p>Check out our latest offers and discounts across all categories. Limited time only!</p>
+    <div class="offers-cards" id="offers-cards"></div>
+  </section>
+
+  <!-- Deals Section -->
+  <section class="category-section" id="deals" style="text-align:center;max-width:700px;margin:2rem auto;">
+    <h2>Deals</h2>
+    <p>Best discounts and limited-time deals on top products.</p>
+    <div class="deals-cards" id="deals-cards"></div>
+  </section>
+
+  <!-- More Section -->
+  <section class="category-section" id="more" style="text-align:center;max-width:700px;margin:2rem auto;">
+    <!-- <h2>More</h2> -->
+    <p>Explore more categories, services, and exclusive features coming soon to FusionMart.</p>
+    <div class="more-cards" id="more-cards"></div>
+  </section>
+
+  <!-- Product Grid -->
+  <section class="products-section" id="products">
+    <!-- <h2>Featured Products</h2>
+    <div class="product-filters">
+      <button class="filter-btn active" data-category="all">All</button>
+      <button class="filter-btn" data-category="electronics">Electronics</button>
+      <button class="filter-btn" data-category="home">Home Goods</button>
+    </div> -->
+    <div class="filter-sort-bar" style="margin-bottom:0;">
+      <!-- <select class="sort-dropdown" id="homepage-sort">
+        <option value="default">Sort By</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rating">Rating</option>
+        <option value="newest">Newest</option>
+      </select> -->
+    </div>
+    <div class="product-grid">
+      <!-- Product cards will be injected by JS -->
+    </div>
+  </section>
+
+  <!-- Quick View Modal (add reviews section) -->
+  <div id="quick-view-modal" class="modal hidden" aria-modal="true" role="dialog">
+    <div class="modal-content">
+      <button class="close-modal" aria-label="Close">&times;</button>
+      <div class="modal-body">
+        <!-- Product details will be injected by JS -->
+      </div>
+      <div class="reviews-section" id="reviews-section">
+        <!-- Reviews will be injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" aria-label="FusionMart Footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="/images/fusionmartlogo.jpg" alt="FusionMart Logo" />
+        <span>FusionMart</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#offers">offers</a></li>
+        <li><a href="#deals">Deals</a></li>
+        <!-- <li><a href="#contact">Contact</a></li> -->
+        <li><a href="contactus.html">Contact Us</a></li>
+        <!-- <li><a href="chatbot.html">Chatbot</a></li> -->
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="refund.html">Refund</a></li>
+      </ul>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram" style="display:inline-block;vertical-align:middle;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="6" fill="#E1306C"/><path d="M12 7.2A4.8 4.8 0 1 0 12 16.8A4.8 4.8 0 1 0 12 7.2Z" fill="#fff"/><circle cx="17.2" cy="6.8" r="1.2" fill="#fff"/></svg>
+        </a>
+        <a href="#" aria-label="YouTube" style="display:inline-block;vertical-align:middle;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="6" fill="#FF0000"/><polygon points="10,8 16,12 10,16" fill="#fff"/></svg>
+        </a>
+        <a href="#" aria-label="WhatsApp" style="display:inline-block;vertical-align:middle;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="6" fill="#25D366"/><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.967-.94 1.166-.173.198-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.007-.372-.009-.571-.009-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.099 3.205 5.077 4.369.71.306 1.263.489 1.695.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.007-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z" fill="#fff"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2024 FusionMart. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Floating Chatbot Button -->
+  <button id="open-chatbot" style="position:fixed;bottom:30px;right:30px;z-index:9998;background:#0a57d4;color:#fff;border:none;border-radius:50%;width:56px;height:56px;box-shadow:0 4px 16px rgba(0,0,0,0.18);font-size:2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;animation:bounceIn 1s;">
+    💬
+  </button>
+
+  <!-- Embedded Chatbot Widget (hidden by default) -->
+  <div id="chatbot" style="display:none;">
+    <div id="chat-header">
+      Fusion Assistant 
+      <span id="chat-close">✖</span>
+    </div>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Type your message..." />
+  </div>
+
+  <link rel="stylesheet" href="fusionchat.css" />
+  <style>
+    @keyframes bounceIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.1); opacity: 1; }
+      80% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+    #chatbot.animated {
+      animation: bounceIn 0.7s;
+    }
+    @keyframes bounce {
+      0% { transform: scale(0.9); }
+      30% { transform: scale(1.1); }
+      50% { transform: scale(0.97); }
+      70% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    .bounce-animate {
+      animation: bounce 0.9s;
+      display: inline-block;
+    }
+    .bounce-animate:hover {
+      animation: bounce 0.7s;
+    }
+    .category-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .category-section h2 {
+      font-size: 2.2rem;
+      color: #004aad;
+      margin-bottom: 10px;
+    }
+
+    .category-desc {
+      font-size: 1.2rem;
+      color: #555;
+      margin-bottom: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+  <script>
+    // Chatbot logic (from chatbot.html)
+    (function(){
+      const chatBox = document.getElementById("chat-box");
+      const userInput = document.getElementById("user-input");
+      const chatbot = document.getElementById("chatbot");
+      const chatClose = document.getElementById("chat-close");
+      const openChatbot = document.getElementById("open-chatbot");
+      openChatbot.addEventListener("click", () => {
+        chatbot.style.display = "flex";
+        chatbot.classList.add("animated");
+        setTimeout(()=>chatbot.classList.remove("animated"), 800);
+        openChatbot.style.display = "none";
+      });
+      chatClose.addEventListener("click", () => {
+        chatbot.style.display = "none";
+        openChatbot.style.display = "flex";
+      });
+      function sendMessage(message, sender = "user") {
+        const msgDiv = document.createElement("div");
+        msgDiv.className = sender === "user" ? "user-message" : "bot-message";
+        msgDiv.innerHTML = message;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+      function addButtonOptions(options, callback) {
+        const container = document.createElement("div");
+        container.className = "bot-message";
+        options.forEach(option => {
+          const btn = document.createElement("button");
+          btn.textContent = option;
+          btn.className = "chat-btn";
+          btn.onclick = () => {
+            sendMessage(option, "user");
+            callback(option);
+          };
+          container.appendChild(btn);
+        });
+        chatBox.appendChild(container);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+      function botReply(input) {
+        const lowerInput = input.toLowerCase();
+        if (lowerInput.includes("track") || lowerInput.includes("order")) {
+          sendMessage("Can I redirect you to the orders page?", "bot");
+          addButtonOptions(["Yes", "No"], (choice) => {
+            if (choice === "Yes") {
+              window.location.href = "index.html";
+            } else {
+              sendMessage("Okay.", "bot");
+            }
+          });
+        } else if (lowerInput.includes("refund") || lowerInput.includes("how much time") || lowerInput.includes("money back")) {
+          sendMessage("Was your payment made via UPI or Cash?", "bot");
+          addButtonOptions(["UPI", "Cash"], (choice) => {
+            if (choice === "UPI") {
+              sendMessage("Your refund will be credited within 24-48 hours to the UPI ID you used during payment.", "bot");
+            } else {
+              sendMessage("Since it was a cash payment, your refund will be credited to your Fusion Mart wallet.", "bot");
+            }
+          });
+        } else if (lowerInput.includes("return")) {
+          sendMessage("Fusion Mart accepts returning the product within 15 days.", "bot");
+        } else if (lowerInput.includes("bye")) {
+          sendMessage("Yeah, you're always welcome!", "bot");
+        } else if (lowerInput.includes("payment")) {
+          sendMessage("We accept UPI and Cash on Delivery.", "bot");
+        } else if (lowerInput.includes("shipping")) {
+          sendMessage("Shipping usually takes 2-7 business days depending on your location.", "bot");
+        } else if (lowerInput.includes("contact") || lowerInput.includes("support") || lowerInput.includes("admin")) {
+          sendMessage("You can reach our support/admin at 📧 vigneshinapakolla@gmail.com", "bot");
+        } else if (lowerInput.includes("hello") || lowerInput.includes("hi")) {
+          sendMessage("Hello! How can I assist you today?", "bot");
+        } else {
+          sendMessage("Sorry, I didn't understand that. You can ask about orders, refund, returns, payments, contact or support.", "bot");
+        }
+      }
+      userInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter" && userInput.value.trim()) {
+          const input = userInput.value.trim();
+          sendMessage(input, "user");
+          userInput.value = "";
+          setTimeout(() => {
+            botReply(input);
+          }, 600);
+        }
+      });
+      setTimeout(() => {
+        sendMessage("Welcome to Fusion Assistant! How can I help you today?", "bot");
+      }, 600);
+    })();
+
+    // Simple More dropdown logic
+    const moreBtn = document.getElementById('more-menu-btn');
+    const moreDropdown = document.getElementById('more-dropdown');
+    if (moreBtn && moreDropdown) {
+      moreBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        moreDropdown.style.display = moreDropdown.style.display === 'block' ? 'none' : 'block';
+      });
+      document.addEventListener('click', function(e) {
+        if (!moreBtn.contains(e.target) && !moreDropdown.contains(e.target)) {
+          moreDropdown.style.display = 'none';
+        }
+      });
+    }
+
+    
+  </script>
+  <script src="script.js"></script>
+  <script src="load-products.js"></script>
+</body>
+</html> 

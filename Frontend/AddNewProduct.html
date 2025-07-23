@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FusionStore - Add Product</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #2c3e50;
+      padding: 1rem;
+      color: white;
+      text-align: center;
+    }
+
+    .add-product {
+      background: white;
+      padding: 2rem;
+      margin: 2rem auto;
+      max-width: 800px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .add-product h2 {
+      margin-bottom: 1rem;
+      color: #2c3e50;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .product-buttons {
+      display: flex;
+      justify-content: flex-start;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .product-buttons button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      background-color: #004aad;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .product-buttons button:hover {
+      background-color: #003a8c;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to Fusion Store</h1>
+  </header>
+
+  <section class="add-product">
+    <h2>Add New Product</h2>
+
+    <div class="form-group">
+      <label for="name">Product Name</label>
+      <input type="text" id="name" placeholder="Enter product name">
+    </div>
+
+    <div class="form-group">
+      <label for="image">Image URL</label>
+      <input type="text" id="image" placeholder="Enter image URL">
+    </div>
+
+    <div class="form-group">
+      <label for="rating">Rating</label>
+      <input type="number" id="rating" placeholder="Enter product rating (e.g., 4)">
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input type="number" id="price" placeholder="Enter product price">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Short Description</label>
+      <textarea id="description" rows="3" placeholder="Enter product description"></textarea>
+    </div>
+
+    <div class="product-buttons">
+      <button id="submit-btn">Add Product</button>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Fusion Store. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById("submit-btn").addEventListener("click", async () => {
+      const name = document.getElementById("name").value;
+      const image = document.getElementById("image").value;
+      const rating = document.getElementById("rating").value;
+      const price = document.getElementById("price").value;
+      const description = document.getElementById("description").value;
+
+      if (!name || !description) {
+        alert("Please fill in all required fields (name & description).");
+        return;
+      }
+
+      const productData = {
+        name: name,
+        image: image,
+        rating: parseInt(rating),
+        price: parseFloat(price),
+        description: description
+      };
+
+      try {
+        const response = await fetch("http://localhost:8080/api/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(productData)
+        });
+
+        if (response.ok) {
+          alert("✅ Product added successfully!");
+          ["name", "image", "rating", "price", "description"].forEach(id => {
+            document.getElementById(id).value = "";
+          });
+
+          // Optional: redirect to admin dashboard
+          window.location.href = "admin.html";
+        } else {
+          const errorMsg = await response.text();
+          alert("❌ Failed to add product: " + errorMsg);
+        }
+      } catch (error) {
+        alert("❌ Error connecting to server: " + error);
+      }
+    });
+
+    
+
+  </script>
+</body>
+</html>

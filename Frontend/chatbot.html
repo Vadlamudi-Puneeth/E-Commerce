@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fusion Assistant</title>
+  <link rel="stylesheet" href="fusionchat.css" />
+</head>
+<body>
+
+  <div id="chatbot">
+    <div id="chat-header">
+      Fusion Assistant 
+      <span id="chat-close">✖</span> <!-- 🔧 Close Button -->
+    </div>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Type your message..." />
+  </div>
+
+  <script>
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
+    const chatbot = document.getElementById("chatbot");
+    const chatClose = document.getElementById("chat-close"); // 🔧
+
+    chatClose.addEventListener("click", () => {
+      chatbot.style.display = "none"; // 🔧 hide chatbot
+    });
+
+    function sendMessage(message, sender = "user") {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = sender === "user" ? "user-message" : "bot-message";
+      msgDiv.innerHTML = message;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function addButtonOptions(options, callback) {
+      const container = document.createElement("div");
+      container.className = "bot-message";
+
+      options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.className = "chat-btn";
+        btn.onclick = () => {
+          sendMessage(option, "user");
+          callback(option);
+        };
+        container.appendChild(btn);
+      });
+
+      chatBox.appendChild(container);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function botReply(input) {
+      const lowerInput = input.toLowerCase();
+
+      if (lowerInput.includes("track") || lowerInput.includes("order")) {
+        sendMessage("Can I redirect you to the orders page?", "bot");
+        addButtonOptions(["Yes", "No"], (choice) => {
+          if (choice === "Yes") {
+            window.location.href = "index.html"; // replace with your order page
+          } else {
+            sendMessage("Okay.", "bot");
+          }
+        });
+
+      } else if (lowerInput.includes("refund") || lowerInput.includes("how much time") || lowerInput.includes("money back")) {
+        sendMessage("Was your payment made via UPI or Cash?", "bot");
+        addButtonOptions(["UPI", "Cash"], (choice) => {
+          if (choice === "UPI") {
+            sendMessage("Your refund will be credited within 24-48 hours to the UPI ID you used during payment.", "bot");
+          } else {
+            sendMessage("Since it was a cash payment, your refund will be credited to your Fusion Mart wallet.", "bot");
+          }
+        });
+
+      } else if (lowerInput.includes("return")) {
+        sendMessage("Fusion Mart accepts returning the product within 15 days.", "bot");
+
+      } else if (lowerInput.includes("bye")) {
+        sendMessage("Yeah, you're always welcome!", "bot");
+
+      } else if (lowerInput.includes("payment")) {
+        sendMessage("We accept UPI and Cash on Delivery.", "bot");
+
+      } else if (lowerInput.includes("shipping")) {
+        sendMessage("Shipping usually takes 2-7 business days depending on your location.", "bot");
+
+      } else if (lowerInput.includes("contact") || lowerInput.includes("support") || lowerInput.includes("admin")) {
+        sendMessage("You can reach our support/admin at 📧 vigneshinapakolla@gmail.com", "bot");
+
+      } else if (lowerInput.includes("hello") || lowerInput.includes("hi")) {
+        sendMessage("Hello! How can I assist you today?", "bot");
+
+      } else {
+        sendMessage("Sorry, I didn't understand that. You can ask about 1)return 2)bye 3)payment 5)shipping 6)contact.", "bot");
+      }
+    }
+
+    userInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter" && userInput.value.trim()) {
+        const input = userInput.value.trim();
+        sendMessage(input, "user");
+        userInput.value = "";
+
+        setTimeout(() => {
+          botReply(input);
+        }, 600);
+      }
+    });
+
+    window.onload = function () {
+      setTimeout(() => {
+        sendMessage("Welcome to Fusion Assistant! How can I help you today?", "bot");
+      }, 300);
+    };
+  </script>
+
+</body>
+</html>

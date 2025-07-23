@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | FusionMart</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <style>
+    .details-container { max-width: 900px; margin: 2.5rem auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); padding: 2.5rem 2rem; }
+    .details-flex { display: flex; flex-wrap: wrap; gap: 2.5rem; align-items: flex-start; }
+    .details-img { flex: 1; min-width: 220px; text-align: center; }
+    .details-img img { width: 100%; max-width: 320px; border-radius: 12px; background: #f8f9fc; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+    .details-info { flex: 2; min-width: 260px; }
+    .details-info h1 { color: #004aad; font-size: 2rem; margin-bottom: 0.7rem; }
+    .details-badge { margin-bottom: 0.7rem; }
+    .details-price { font-size: 1.5rem; font-weight: 700; color: #222; margin-bottom: 1rem; }
+    .details-desc { color: #444; margin-bottom: 1.2rem; }
+    .details-actions { margin-bottom: 1.5rem; }
+    .details-actions .add-cart-btn { font-size: 1.1rem; padding: 12px 32px; }
+    .details-highlights { margin-bottom: 1.5rem; }
+    .details-highlights ul { margin: 0.5rem 0 0 1.2rem; padding: 0; font-size: 1rem; color: #333; }
+    .details-reviews { margin-top: 2rem; }
+    .details-reviews h3 { color: #004aad; font-size: 1.2rem; margin-bottom: 0.7rem; }
+    .review-card { margin-bottom: 1.1rem; }
+    .review-user { font-weight: 600; }
+    .review-stars { margin-bottom: 0.2rem; }
+    .back-btn { display: inline-block; margin-bottom: 1.5rem; background: #004aad; color: #fff; border: none; border-radius: 6px; padding: 8px 22px; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+    .back-btn:hover { background: #00337a; }
+    @media (max-width: 900px) { .details-flex { flex-direction: column; gap: 1.5rem; } .details-img img { max-width: 98vw; } }
+  </style>
+</head>
+<body>
+  <div class="details-container">
+    <button class="back-btn" onclick="window.history.back()">← Back</button>
+    <div class="details-flex" id="product-details"></div>
+    <div class="details-reviews" id="details-reviews"></div>
+  </div>
+  <script src="script.js"></script>
+  <script>
+    // Demo reviews (same as homepage)
+    const demoReviews = [
+      { user: 'Priya S.', rating: 5, text: 'Amazing product! Highly recommend.' },
+      { user: 'Rahul M.', rating: 4, text: 'Good value for money.' },
+      { user: 'Emily T.', rating: 5, text: 'Exceeded my expectations.' },
+    ];
+    // Get product id from URL
+    function getProductId() {
+      const params = new URLSearchParams(window.location.search);
+      return parseInt(params.get('id'), 10);
+    }
+    // Render stars
+    function renderStars(rating) {
+      const full = Math.floor(rating);
+      const half = rating % 1 >= 0.5 ? 1 : 0;
+      let stars = '';
+      for (let i = 0; i < full; i++) stars += '★';
+      if (half) stars += '☆';
+      while (stars.length < 5) stars += '☆';
+      return `<span class="stars" style="color:#f7b500;font-size:1.1em;">${stars}</span>`;
+    }
+    // Wait for script.js to load products
+    window.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        if (typeof products === 'undefined') return;
+        const id = getProductId();
+        const prod = products.find(p => p.id === id);
+        if (!prod) {
+          document.getElementById('product-details').innerHTML = '<p>Product not found.</p>';
+          return;
+        }
+        document.getElementById('product-details').innerHTML = `
+          <div class="details-img">
+            <img src="${prod.image}" alt="${prod.name}">
+            ${prod.badge ? `<div class='details-badge'><span class='product-badge ${prod.badge === 'Out of Stock' ? 'badge-out' : 'badge-new'}'>${prod.badge}</span></div>` : ''}
+          </div>
+          <div class="details-info">
+            <h1>${prod.name}</h1>
+            <div style="margin-bottom:0.7rem;">${renderStars(prod.rating)} <span class="review-count">(${prod.reviews} ratings)</span></div>
+            <div class="details-price">₹${prod.price.toLocaleString()}</div>
+            <div class="details-desc">${prod.desc}</div>
+            <div class="details-actions">
+              <button class="add-cart-btn" data-id="${prod.id}">Add to Cart</button>
+            </div>
+            <div class="details-highlights">
+              <strong>Highlights:</strong>
+              <ul>
+                <li>100% Genuine Product</li>
+                <li>Fast Delivery & Easy Returns</li>
+                <li>Secure Payment Options</li>
+              </ul>
+            </div>
+          </div>
+        `;
+        document.getElementById('details-reviews').innerHTML = `
+          <h3>Customer Reviews</h3>
+          ${demoReviews.map(r => `
+            <div class='review-card'>
+              <div class='review-user'>${r.user}</div>
+              <div class='review-stars'>${renderStars(r.rating)}</div>
+              <div class='review-text'>${r.text}</div>
+            </div>
+          `).join('')}
+        `;
+        // Add to Cart functionality
+        document.querySelector('.add-cart-btn').addEventListener('click', function() {
+          let cart = JSON.parse(localStorage.getItem('fusionmart_cart') || '[]');
+          const existing = cart.find(item => item.id === prod.id);
+          if (existing) existing.qty++;
+          else cart.push({ id: prod.id, qty: 1 });
+          localStorage.setItem('fusionmart_cart', JSON.stringify(cart));
+          alert('Added to cart!');
+        });
+      }, 100);
+    });
+  </script>
+</body>
+</html> 

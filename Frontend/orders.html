@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Orders | FusionMart</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <style>
+    .orders-container { max-width: 900px; margin: 2.5rem auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); padding: 2.5rem 2rem; }
+    .orders-title { font-size: 2rem; color: #004aad; margin-bottom: 1.5rem; text-align: center; }
+    .order-block { margin-bottom: 2.5rem; border-bottom: 1px solid #eee; padding-bottom: 2rem; }
+    .order-summary { font-size: 1.1rem; margin-bottom: 1.2rem; }
+    .order-products-list { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1.2rem; }
+    .order-product-card { background: #f8f9fc; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 1rem; min-width: 220px; flex: 1 1 220px; display: flex; align-items: center; gap: 1rem; }
+    .order-product-img img { width: 60px; height: 60px; object-fit: contain; border-radius: 8px; background: #fff; }
+    .order-product-info { flex: 1; }
+    .order-product-name { font-weight: 600; color: #004aad; margin-bottom: 0.2rem; }
+    .order-product-price { color: #222; font-size: 1.05rem; }
+    .order-product-qty { color: #888; font-size: 0.98em; }
+    .empty-orders-msg { text-align: center; color: #888; font-size: 1.2rem; margin: 3rem 0; }
+  </style>
+</head>
+<body>
+  <div class="orders-container">
+    <div class="orders-title">Your Orders</div>
+    <div id="orders-list"></div>
+  </div>
+  <script>
+async function renderOrders() {
+  const token = localStorage.getItem('fusionmart_jwt');
+  const email = localStorage.getItem('fusionmart_user_email');
+  const res = await fetch('http://localhost:8080/api/orders', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  });
+  const orders = await res.json();
+  // Filter orders by user email if needed
+  const userOrders = orders.filter(o => o.userEmail === email);
+  const ordersList = document.getElementById('orders-list');
+  if (!userOrders.length) {
+    ordersList.innerHTML = '<div class="empty-orders-msg">You have no orders yet.</div>';
+    return;
+  }
+  ordersList.innerHTML = userOrders.map(o => `
+    <div class="order-block">
+      <div class="order-summary">
+        <strong>Order ID:</strong> ${o.order_id} &nbsp; | &nbsp;
+        <strong>Amount:</strong> \u20b9${o.amount.toLocaleString()} &nbsp; | &nbsp;
+        <strong>Date:</strong> ${o.order_date} &nbsp; | &nbsp;
+        <strong>Status:</strong> ${o.order_status}
+      </div>
+      <div class="order-products-list">
+        ${(o.items && o.items.length) ? o.items.map(p => `
+          <div class="order-product-card">
+            <div class="order-product-img"><img src="${p.product.image}" alt="${p.product.name}"></div>
+            <div class="order-product-info">
+              <div class="order-product-name">${p.product.name}</div>
+              <div class="order-product-price">\u20b9${p.product.price.toLocaleString()}</div>
+              <div class="order-product-qty">Qty: ${p.quantity}</div>
+            </div>
+          </div>
+        `).join('') : '<div style="color:#888;">No products in this order.</div>'}
+      </div>
+    </div>
+  `).join('');
+}
+renderOrders();
+</script>
+</body>
+</html> 
